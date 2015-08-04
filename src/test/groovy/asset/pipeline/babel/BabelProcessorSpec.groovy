@@ -1,16 +1,21 @@
 package asset.pipeline.babel
 
 import asset.pipeline.AssetCompiler
+import asset.pipeline.AssetPipelineConfigHolder
 import spock.lang.Specification
 
-class BabelProcessorSpec extends Specification{
+class BabelProcessorSpec extends Specification {
 
     def es6code = """
         var a = ["Hydrogen","Helium","Lithium","Beryl­lium"];
         var result = a.map(s => s.length);
     """
 
-    def "process should work"(){
+    def setup() {
+        AssetPipelineConfigHolder.config = [babel: [options: [blacklist: ['useStrict']]]]
+    }
+
+    def "process should work"() {
         given:
         BabelProcessor processor = new BabelProcessor(new AssetCompiler())
         Es6AssetFile file = new Es6AssetFile()

@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
 group = 'net.errbuddy.plugins'
-version = '1.1.5'
+version = '1.2.0'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 buildscript {
@@ -38,7 +38,7 @@ dependencies {
     compile "com.bertramlabs.plugins:asset-pipeline-core:2.3.0"
     compile 'org.mozilla:rhino:1.7R4'
     compile 'log4j:log4j:1.2.17'
-
+    compile 'com.google.code.gson:gson:2.3.1'
     testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
 }
 

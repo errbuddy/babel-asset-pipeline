@@ -3,6 +3,8 @@ package asset.pipeline.babel
 import asset.pipeline.AbstractProcessor
 import asset.pipeline.AssetCompiler
 import asset.pipeline.AssetFile
+import asset.pipeline.AssetPipelineConfigHolder
+import com.google.gson.Gson
 import groovy.util.logging.Log4j
 import org.mozilla.javascript.Context
 import org.mozilla.javascript.Scriptable
@@ -17,6 +19,7 @@ class BabelProcessor extends AbstractProcessor {
     Scriptable globalScope
     ClassLoader classLoader
     Invocable invocable
+    static final String BABEL_OPTIONS = new Gson().toJson(AssetPipelineConfigHolder.config?.babel?.options ?: [:])
 
     BabelProcessor(AssetCompiler precompiler) {
         super(precompiler)
@@ -39,7 +42,7 @@ class BabelProcessor extends AbstractProcessor {
     }
 
     String process(String input, AssetFile assetFile) {
-         log.info("transforming $assetFile.name")
+        log.info("transforming $assetFile.name")
         try {
             threadLocal.set(assetFile);
 
@@ -47,7 +50,7 @@ class BabelProcessor extends AbstractProcessor {
             def compileScope = cx.newObject(globalScope)
             compileScope.setParentScope(globalScope)
             compileScope.put("es6Source", compileScope, input)
-            def result = cx.evaluateString(compileScope, "babel.transform(es6Source,  {blacklist: ['useStrict']}).code", "babel command", 0, null)
+            def result = cx.evaluateString(compileScope, "babel.transform(es6Source, $BABEL_OPTIONS).code", "babel command", 0, null)
             return result.toString()
 
         } catch (Exception e) {
