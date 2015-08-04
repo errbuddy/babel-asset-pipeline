@@ -18,7 +18,8 @@ class BabelProcessorSpec extends Specification{
         when:
         def result = processor.process(es6code, file)
         then:
-        result == '''var a = ["Hydrogen", "Helium", "Lithium", "Beryl­lium"];
+        result == '''
+var a = ["Hydrogen", "Helium", "Lithium", "Beryl­lium"];
 var result = a.map(function (s) {
         return s.length;
 });'''
