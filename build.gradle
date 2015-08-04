@@ -1,0 +1,128 @@
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+apply plugin: 'maven'
+
+group = 'net.errbuddy.plugins'
+version = '1.1.5-SNAPSHOT'
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5'
+    }
+}
+
+
+repositories {
+    mavenLocal()
+    jcenter()
+    mavenCentral()
+}
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+
+dependencies {
+    provided 'org.codehaus.groovy:groovy-all:2.0.7'
+    compile "com.bertramlabs.plugins:asset-pipeline-core:2.3.0"
+    compile 'org.mozilla:rhino:1.7R4'
+    compile 'log4j:log4j:1.2.17'
+
+    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+}
+
+apply plugin: 'com.jfrog.bintray'
+
+bintray {
+    user = bintray_user
+    key = bintray_key
+    publications = ['maven']
+    publish = true
+    pkg {
+        repo = 'plugins'
+        name = 'babel-asset-pipeline'
+        userOrg = 'errbuddy'
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId 'babel-asset-pipeline'
+            pom.withXml {
+                asNode().children().last() + {
+                    resolveStrategy = Closure.DELEGATE_FIRST
+                    name 'babel-asset-pipeline'
+                    description 'Provides server side jsx compilation for the Asset-Pipeline library.'
+                    url 'https://github.com/peh/babel-asset-pipeline'
+                    scm {
+                        url 'https://github.com/peh/babel-asset-pipeline'
+                        connection 'scm:https://peh@github.com/peh/babel-asset-pipeline.git'
+                        developerConnection 'scm:git://github.com/peh/babel-asset-pipeline.git'
+                    }
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/license/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id 'peh'
+                            name 'Philipp Eschenbach'
+                            email 'philipp@errbuddy.net'
+                        }
+                    }
+                }
+            }
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file:///Users/philipp/Workspace/errbuddy-plugins")
+        }
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task(console, dependsOn: 'classes', type: JavaExec) {
+    main = 'groovy.ui.Console'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+        showStandardStreams = true
+    }
+}
+
+
+uploadArchives.dependsOn build, sourcesJar, javadocJar
