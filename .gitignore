@@ -12,3 +12,5 @@ gradle.properties
 *.iml
 
 .DS_STORE
+
+node_modules/

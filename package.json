@@ -1,0 +1,24 @@
+{
+  "name": "babel-asset-pipeline",
+  "version": "1.3.0",
+  "description": "babel.js transformation for asset-pipeline",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/errbuddy/babel-asset-pipeline.git"
+  },
+  "author": "Philipp Eschenbach",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/errbuddy/babel-asset-pipeline/issues"
+  },
+  "homepage": "https://github.com/errbuddy/babel-asset-pipeline#readme",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-core": "^5.8.24",
+    "gulp": "^3.9.0"
+  }
+}
