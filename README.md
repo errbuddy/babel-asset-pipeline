@@ -6,7 +6,15 @@ simply add
 ```
 compile 'net.errbuddy.plugins:babel-asset-pipeline:1.3.0'
 ```
-to dependencies in build.gradle.
+to dependencies 
+
+and 
+
+```
+maven { url "http://dl.bintray.com/errbuddy/plugins" }
+```
+
+to you repositories in build.gradle.
 The plugin will *ONLY process .es6* files if not otherwise told.
 
 # configuration
