@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
 group = 'net.errbuddy.plugins'
-version = '1.3.6-SNAPSHOT'
+version = '1.3.0'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 buildscript {
