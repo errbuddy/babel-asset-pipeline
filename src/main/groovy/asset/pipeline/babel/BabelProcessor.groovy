@@ -15,7 +15,7 @@ class BabelProcessor extends AbstractProcessor {
 
     static Scriptable globalScope
 
-    String babelOptions
+    String globalBabelOptions
 
     public static final ThreadLocal THREAD_LOCAL = new ThreadLocal()
     private static final CONVERTER = new Gson()
@@ -24,9 +24,9 @@ class BabelProcessor extends AbstractProcessor {
     BabelProcessor(AssetCompiler precompiler) {
         super(precompiler)
         if (config) {
-            babelOptions = CONVERTER.toJson(config.options ?: [:])
+            globalBabelOptions = CONVERTER.toJson(config.options ?: [:])
         } else {
-            babelOptions = "{}" //
+            globalBabelOptions = "{}" //
         }
         // only load all the javascript if it is enabled AND not yet initialized
         if (enabled && !contextInitialized) {
@@ -56,12 +56,20 @@ class BabelProcessor extends AbstractProcessor {
         // the given AssetFile is a Es6File OR processJsFiles is enabled
         if (enabled && (processJsFiles || assetFile in Es6AssetFile)) {
             try {
+                String localBabelOptions = globalBabelOptions
+                Map config = getConfig()?.options?.clone()
+                if (config?.moduleIds) {
+                    // Used when transpiling ES2015 modules to other formats,
+                    // provides babel with a module ID based on the assetFile's location.
+                    config.moduleId = removeExtensionFromPath(assetFile.path)
+                    localBabelOptions = CONVERTER.toJson(config ?: [:])
+                }
                 Context cx = Context.enter()
                 THREAD_LOCAL.set(assetFile)
                 def compileScope = cx.newObject(globalScope)
                 compileScope.setParentScope(globalScope)
                 compileScope.put("es6Source", compileScope, input)
-                def result = cx.evaluateString(compileScope, "babel.transform(es6Source, $babelOptions).code", "babel command", 0, null)
+                def result = cx.evaluateString(compileScope, "babel.transform(es6Source, $localBabelOptions).code", "babel command", 0, null)
                 return result.toString()
 
             } catch (Exception e) {
@@ -88,6 +96,19 @@ class BabelProcessor extends AbstractProcessor {
 
     static boolean isProcessJsFiles(){
         config?.processJsFiles != null ? config.processJsFiles as Boolean : false
+    }
+
+    static String removeExtensionFromPath(String path) {
+
+        String separator = System.getProperty("file.separator")
+
+        // Make sure paths with dots are not truncated. e.g. foo.bar/baz.js
+        int lastSeparatorIndex = path.lastIndexOf(separator)
+        int extensionIndex = path.lastIndexOf(".")
+
+        if (lastSeparatorIndex < extensionIndex) return path.substring(0, extensionIndex)
+
+        return path
     }
 
 }

@@ -140,4 +140,27 @@ try {
         false     | false
 
     }
+
+	@Unroll
+	def "Test that module IDs are generated correctly #path => #expected"() {
+		given:
+		BabelProcessor processor = new BabelProcessor(new AssetCompiler())
+		when:
+		def moduleId = processor.removeExtensionFromPath(path)
+
+		then:
+		moduleId == expected
+
+		where:
+		path             | expected
+		'a/b/c'         | 'a/b/c'
+		'a/b/c.jpg'     | 'a/b/c'
+		'a/b/c.jpg.jpg' | 'a/b/c.jpg'
+		'a.b/c'         | 'a.b/c'
+		'a.b/c.jpg'     | 'a.b/c'
+		'a.b/c.jpg.jpg' | 'a.b/c.jpg'
+		'c'             | 'c'
+		'c.jpg'         | 'c'
+		'c.jpg.jpg'     | 'c.jpg'
+	}
 }
