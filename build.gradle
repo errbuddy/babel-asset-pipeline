@@ -44,17 +44,12 @@ dependencies {
 
 apply plugin: 'com.jfrog.bintray'
 
-if(!project.hasProperty('bintray_user')){
-    project.ext.bintray_user = 'default'
-}
-
-if(!project.hasProperty('bintray_key')){
-    project.ext.bintray_key = 'passkey'
-}
+def bintrayUser = project.hasProperty('bintray_user') ? bintray_user : 'default'
+def bintrayKey = project.hasProperty('bintray_key') ? bintray_key : 'default'
 
 bintray {
-    user = bintray_user
-    key = bintray_key
+    user = bintrayUser
+    key = bintrayKey
     publications = ['maven']
     publish = true
     pkg {
