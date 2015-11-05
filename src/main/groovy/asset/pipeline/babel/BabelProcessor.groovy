@@ -91,7 +91,7 @@ class BabelProcessor extends AbstractProcessor {
     }
 
     static boolean isEnabled(){
-        config?.enabled != null ? config.enabled as Boolean : true
+        config?.containsKey('enabled') ? config.enabled as Boolean : true
     }
 
     static boolean isProcessJsFiles(){
