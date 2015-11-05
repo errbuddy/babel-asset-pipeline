@@ -124,5 +124,4 @@ test {
     }
 }
 
-
 uploadArchives.dependsOn build, sourcesJar, javadocJar
