@@ -44,6 +44,14 @@ dependencies {
 
 apply plugin: 'com.jfrog.bintray'
 
+if(!project.hasProperty('bintray_user')){
+    project.ext.bintray_user = 'default'
+}
+
+if(!project.hasProperty('bintray_key')){
+    project.ext.bintray_key = 'passkey'
+}
+
 bintray {
     user = bintray_user
     key = bintray_key
