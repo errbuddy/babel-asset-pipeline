@@ -32,3 +32,19 @@ defaults to false. Whether to process JsAssetFiles (.js) too. *By default to Pro
 grails.asset.babel.options = [blacklist: ['useStrict'], loose: 'all'] // babel transfom options. see https://babeljs.io/docs/usage/options/ for more information
 ```
 defaults to null. A Map of options passed to babels transform method. see https://babeljs.io/docs/usage/options/ for possible values
+
+## Modules
+```
+grails.asset.babel.options = [modules: 'amd', moduleIds: true]
+```
+When the `moduleIds` option is set the plugin provides Babel with a `moduleId` for each file. The ID is the relative path of the file inside `grails-app/assets/javascripts` with the file extension removed. 
+
+```
+e.g.
+# File Path:
+grails-app/assets/javascripts/foo/bar.js
+# Generated moduleId:
+foo/bar
+```
+
+Note: Explicit module IDs are not available when generating CommonJS modules.
