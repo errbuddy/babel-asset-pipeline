@@ -17,7 +17,7 @@ maven { url "http://dl.bintray.com/errbuddy/plugins" }
 ```
 
 to you repositories in build.gradle.
-The plugin will *ONLY process .es6* files if not otherwise told.
+The plugin will *ONLY process .es6 and .jsx* files if not otherwise told.
 
 # configuration
 ```
