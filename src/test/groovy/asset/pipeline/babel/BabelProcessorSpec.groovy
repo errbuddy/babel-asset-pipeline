@@ -11,6 +11,8 @@ import spock.lang.Unroll
 @Stepwise
 class BabelProcessorSpec extends Specification {
 
+    private static final JSX_INPUT = "var foo = (<h1>Hello</h1>);"
+    private static final JSX_OUTPUT = "var foo = React.createElement(\n  \"h1\",\n  null,\n  \"Hello\"\n);"
     private static final ES6_INPUT = """var a = ["Hydrogen","Helium","Lithium","Beryl­lium"];var result = a.map(s => s.length);"""
 
     private static final ES5_OUTPUT = '''var a = ["Hydrogen", "Helium", "Lithium", "Beryl­lium"];var result = a.map(function (s) {
@@ -123,7 +125,18 @@ try {
         false   | false
     }
 
-    def "JsAssetFiles are only processed if enabled option  is #processJs"() {
+    def "process should transform JSX"() {
+        given:
+        BabelProcessor processor = new BabelProcessor(new AssetCompiler())
+        Es6AssetFile file = new Es6AssetFile()
+        file.path = "test.jsx"
+        when:
+        def result = processor.process(JSX_INPUT, file)
+        then:
+        result == JSX_OUTPUT
+    }
+
+    def "JsAssetFiles are only processed if enabled option is #processJs"() {
         given:
         AssetPipelineConfigHolder.config = [babel: [processJsFiles: processJs, enabled: true, options: [blacklist: ['useStrict']]]]
         BabelProcessor processor = new BabelProcessor(new AssetCompiler())
@@ -138,7 +151,6 @@ try {
         processJs | isProcessed
         true      | true
         false     | false
-
     }
 
 	@Unroll

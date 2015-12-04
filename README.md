@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/errbuddy/babel-asset-pipeline.svg?branch=master)](https://travis-ci.org/errbuddy/babel-asset-pipeline)
+
 # babel-asset-pipeline
 babel.js transformation for asset-pipeline
 
@@ -15,7 +17,7 @@ maven { url "http://dl.bintray.com/errbuddy/plugins" }
 ```
 
 to you repositories in build.gradle.
-The plugin will *ONLY process .es6* files if not otherwise told.
+The plugin will *ONLY process .es6 and .jsx* files if not otherwise told.
 
 # configuration
 ```

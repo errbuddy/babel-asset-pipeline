@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
 group = 'net.errbuddy.plugins'
-version = '1.4.0'
+version = '1.4.1'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 buildscript {
@@ -44,9 +44,12 @@ dependencies {
 
 apply plugin: 'com.jfrog.bintray'
 
+def bintrayUser = project.hasProperty('bintray_user') ? bintray_user : 'default'
+def bintrayKey = project.hasProperty('bintray_key') ? bintray_key : 'default'
+
 bintray {
-    user = bintray_user
-    key = bintray_key
+    user = bintrayUser
+    key = bintrayKey
     publications = ['maven']
     publish = true
     pkg {
@@ -123,6 +126,5 @@ test {
         showStandardStreams = true
     }
 }
-
 
 uploadArchives.dependsOn build, sourcesJar, javadocJar

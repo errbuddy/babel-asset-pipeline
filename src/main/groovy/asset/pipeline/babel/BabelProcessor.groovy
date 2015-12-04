@@ -53,8 +53,8 @@ class BabelProcessor extends AbstractProcessor {
     String process(String input, AssetFile assetFile) {
         // only process if
         // processing is enabled AND
-        // the given AssetFile is a Es6File OR processJsFiles is enabled
-        if (enabled && (processJsFiles || assetFile in Es6AssetFile)) {
+        // the given AssetFile is a Es6File OR JsxFile OR processJsFiles is enabled
+        if (enabled && (processJsFiles || assetFile in Es6AssetFile || assetFile in JsxAssetFile)) {
             try {
                 String localBabelOptions = globalBabelOptions
                 Map config = getConfig()?.options?.clone()
