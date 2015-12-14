@@ -153,26 +153,41 @@ try {
         false     | false
     }
 
-	@Unroll
-	def "Test that module IDs are generated correctly #path => #expected"() {
-		given:
-		BabelProcessor processor = new BabelProcessor(new AssetCompiler())
-		when:
-		def moduleId = processor.removeExtensionFromPath(path)
+    @Unroll
+    def "Test that module IDs are generated correctly #path => #expected"() {
+        given:
+        BabelProcessor processor = new BabelProcessor(new AssetCompiler())
+        when:
+        def moduleId = processor.removeExtensionFromPath(path)
 
-		then:
-		moduleId == expected
+        then:
+        moduleId == expected
 
-		where:
-		path             | expected
-		'a/b/c'         | 'a/b/c'
-		'a/b/c.jpg'     | 'a/b/c'
-		'a/b/c.jpg.jpg' | 'a/b/c.jpg'
-		'a.b/c'         | 'a.b/c'
-		'a.b/c.jpg'     | 'a.b/c'
-		'a.b/c.jpg.jpg' | 'a.b/c.jpg'
-		'c'             | 'c'
-		'c.jpg'         | 'c'
-		'c.jpg.jpg'     | 'c.jpg'
-	}
+        where:
+        path            | expected
+        'a/b/c'         | 'a/b/c'
+        'a/b/c.jpg'     | 'a/b/c'
+        'a/b/c.jpg.jpg' | 'a/b/c.jpg'
+        'a.b/c'         | 'a.b/c'
+        'a.b/c.jpg'     | 'a.b/c'
+        'a.b/c.jpg.jpg' | 'a.b/c.jpg'
+        'c'             | 'c'
+        'c.jpg'         | 'c'
+        'c.jpg.jpg'     | 'c.jpg'
+    }
+
+    def "no exception should be thrown when there is no options defined. (test for issue#7)"() {
+        given:
+        def before = AssetPipelineConfigHolder.config
+        AssetPipelineConfigHolder.config = [babel: [enabled: true]]
+        BabelProcessor processor = new BabelProcessor(new AssetCompiler())
+        Es6AssetFile file = new Es6AssetFile()
+        file.path = "test.js"
+        when:
+        processor.process(ES6_INPUT, file)
+        then:
+        noExceptionThrown()
+        cleanup:
+        AssetPipelineConfigHolder.config = before
+    }
 }

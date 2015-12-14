@@ -23,8 +23,8 @@ class BabelProcessor extends AbstractProcessor {
 
     BabelProcessor(AssetCompiler precompiler) {
         super(precompiler)
-        if (config) {
-            globalBabelOptions = CONVERTER.toJson(config.options ?: [:])
+        if (configuration) {
+            globalBabelOptions = CONVERTER.toJson(configuration.options ?: [:])
         } else {
             globalBabelOptions = "{}" //
         }
@@ -57,7 +57,7 @@ class BabelProcessor extends AbstractProcessor {
         if (enabled && (processJsFiles || assetFile in Es6AssetFile || assetFile in JsxAssetFile)) {
             try {
                 String localBabelOptions = globalBabelOptions
-                Map config = getConfig()?.options?.clone()
+                Map config = configuration?.options ? configuration.options.clone() as HashMap : [:]
                 if (config?.moduleIds) {
                     // Used when transpiling ES2015 modules to other formats,
                     // provides babel with a module ID based on the assetFile's location.
@@ -86,16 +86,16 @@ class BabelProcessor extends AbstractProcessor {
         log.debug text
     }
 
-    static def getConfig() {
+    static def getConfiguration() {
         AssetPipelineConfigHolder.config?.babel
     }
 
     static boolean isEnabled(){
-        config?.containsKey('enabled') ? config.enabled as Boolean : true
+        configuration?.containsKey('enabled') ? configuration.enabled as Boolean : true
     }
 
     static boolean isProcessJsFiles(){
-        config?.processJsFiles != null ? config.processJsFiles as Boolean : false
+        configuration?.processJsFiles != null ? configuration.processJsFiles as Boolean : false
     }
 
     static String removeExtensionFromPath(String path) {
