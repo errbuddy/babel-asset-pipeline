@@ -19,25 +19,50 @@ maven { url "http://dl.bintray.com/errbuddy/plugins" }
 to you repositories in build.gradle.
 The plugin will *ONLY process .es6 and .jsx* files if not otherwise told.
 
-# configuration
+# Configuration
+
+## Important
+
+although you can define options in application.yml (or .groovy) it is recommended to configure those options in build.gradle in the "assets" block as otherwise configuration parameters are not picked up during `grails war` or `gradle assetCompile`.
+E.g:
+
 ```
-grails.asset.babel.enabled = true // boolean 
+assets {
+    minifyJs = true
+    minifyCss = true
+    configOptions = [
+        babel: [
+            enabled: true,
+            processJsFiles: true,
+            options: [
+                blacklist: ['useStrict'],
+                loose: 'all'
+            ]
+        ]
+    ]
+}
+```
+
+## Options
+
+```
+grails.assets.babel.enabled = true // boolean 
 ```
 default to true. enables the plugin
 
 ```
-grails.asset.babel.processJsFiles = false // boolean
+grails.assets.babel.processJsFiles = false // boolean
 ```
 defaults to false. Whether to process JsAssetFiles (.js) too. *By default to Processor only touches Es6AssetFiles (.es6)!*
 
 ```
-grails.asset.babel.options = [blacklist: ['useStrict'], loose: 'all'] // babel transfom options. see https://babeljs.io/docs/usage/options/ for more information
+grails.assets.babel.options = [blacklist: ['useStrict'], loose: 'all'] // babel transfom options. see https://babeljs.io/docs/usage/options/ for more information
 ```
 defaults to null. A Map of options passed to babels transform method. see https://babeljs.io/docs/usage/options/ for possible values
 
 ## Modules
 ```
-grails.asset.babel.options = [modules: 'amd', moduleIds: true]
+grails.assets.babel.options = [modules: 'amd', moduleIds: true]
 ```
 When the `moduleIds` option is set the plugin provides Babel with a `moduleId` for each file. The ID is the relative path of the file inside `grails-app/assets/javascripts` with the file extension removed. 
 
