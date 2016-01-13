@@ -5,12 +5,12 @@ import asset.pipeline.AssetCompiler
 import asset.pipeline.AssetFile
 import asset.pipeline.AssetPipelineConfigHolder
 import com.google.gson.Gson
-import groovy.util.logging.Slf4j
+import groovy.util.logging.Log
 import org.mozilla.javascript.Context
 import org.mozilla.javascript.Scriptable
 import org.mozilla.javascript.ScriptableObject
 
-@Slf4j
+@Log
 class BabelProcessor extends AbstractProcessor {
 
     static Scriptable globalScope
@@ -83,7 +83,7 @@ class BabelProcessor extends AbstractProcessor {
     }
 
     static void print(text) {
-        log.debug text
+        log.info text
     }
 
     static def getConfiguration() {
