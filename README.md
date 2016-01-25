@@ -24,7 +24,7 @@ The plugin will *ONLY process .es6 and .jsx* files if not otherwise told.
 
 2.0.0 changed alot! Your old configuration should still work but before upgrading in production you should check whether everything is still working
 
-# configuration
+# Configuration
 ```
 grails.assets.babel.enabled = true // boolean
 ```
@@ -43,8 +43,7 @@ defaults to null. A Map of options passed to babels transform method. see https:
 ```
 grails.assets.babel.processor = 'node'
 ```
-defaults to null which enabled the built in babel5 Processor. Set to "node" if you want to use node (browserify/babelify) to enable the Node processor which requires to have node and
-some dependencies installed in your project. Check the node section to see how to setup everything
+defaults to null which enabled the built in babel5 Processor. Set to "node" if you want to enable the NodeProcessor which requires to have node and some dependencies installed in your project. Check the node section to see how to setup everything
 
 
 ## Modules
