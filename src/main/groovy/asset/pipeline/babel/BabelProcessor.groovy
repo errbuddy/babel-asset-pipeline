@@ -58,6 +58,8 @@ class BabelProcessor extends AbstractProcessor {
             try {
                 String localBabelOptions = globalBabelOptions
                 Map config = configuration?.options ? configuration.options.clone() as HashMap : [:]
+                config.filename = assetFile.name
+
                 if (config?.moduleIds) {
                     // Used when transpiling ES2015 modules to other formats,
                     // provides babel with a module ID based on the assetFile's location.
