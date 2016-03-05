@@ -15,7 +15,6 @@ class BabelProcessor extends AbstractProcessor {
 
     static Scriptable globalScope
 
-    String globalBabelOptions
 
     public static final ThreadLocal THREAD_LOCAL = new ThreadLocal()
     private static final CONVERTER = new Gson()
@@ -23,11 +22,6 @@ class BabelProcessor extends AbstractProcessor {
 
     BabelProcessor(AssetCompiler precompiler) {
         super(precompiler)
-        if (configuration) {
-            globalBabelOptions = CONVERTER.toJson(configuration.options ?: [:])
-        } else {
-            globalBabelOptions = "{}" //
-        }
         // only load all the javascript if it is enabled AND not yet initialized
         if (enabled && !contextInitialized) {
             ClassLoader classLoader = this.class.classLoader
@@ -56,14 +50,16 @@ class BabelProcessor extends AbstractProcessor {
         // the given AssetFile is a Es6File OR JsxFile OR processJsFiles is enabled
         if (enabled && (processJsFiles || assetFile in Es6AssetFile || assetFile in JsxAssetFile)) {
             try {
-                String localBabelOptions = globalBabelOptions
                 Map config = configuration?.options ? configuration.options.clone() as HashMap : [:]
+                config.filename = assetFile.name
+
                 if (config?.moduleIds) {
                     // Used when transpiling ES2015 modules to other formats,
                     // provides babel with a module ID based on the assetFile's location.
                     config.moduleId = removeExtensionFromPath(assetFile.path)
-                    localBabelOptions = CONVERTER.toJson(config ?: [:])
                 }
+                String localBabelOptions = CONVERTER.toJson(config ?: [:])
+
                 Context cx = Context.enter()
                 THREAD_LOCAL.set(assetFile)
                 def compileScope = cx.newObject(globalScope)
@@ -90,11 +86,11 @@ class BabelProcessor extends AbstractProcessor {
         AssetPipelineConfigHolder.config?.babel
     }
 
-    static boolean isEnabled(){
+    static boolean isEnabled() {
         configuration?.containsKey('enabled') ? configuration.enabled as Boolean : true
     }
 
-    static boolean isProcessJsFiles(){
+    static boolean isProcessJsFiles() {
         configuration?.processJsFiles != null ? configuration.processJsFiles as Boolean : false
     }
 
