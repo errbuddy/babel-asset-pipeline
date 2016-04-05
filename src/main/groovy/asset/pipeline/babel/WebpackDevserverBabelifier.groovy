@@ -9,7 +9,7 @@ class WebpackDevserverBabelifier extends Babelifier {
 
     private String webpackConfigLocation
     private String devServerRunScript
-    private static Process devServerProcess
+    synchronized private static Process devServerProcess
     private static final StringBuffer ERROR_BUFFER = new StringBuffer()
     private int portNumber = 3000
 
@@ -51,6 +51,7 @@ class WebpackDevserverBabelifier extends Babelifier {
     }
 
     void startDevServer(AssetFile file) {
+        println "starting dev server on port $port"
         devServerProcess = getProcessString(file).execute()
         devServerProcess.consumeProcessOutput(System.out, ERROR_BUFFER)
         if (devServerProcess.waitFor(5000, TimeUnit.MILLISECONDS)) {

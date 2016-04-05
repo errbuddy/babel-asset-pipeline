@@ -34,6 +34,7 @@ class WebpackBabelifierSpec extends Specification {
         def result = babelifier.babelify(code, file)
         then:
         result != null // we just want to know that this works!
+        result.size() > 0
     }
 
     def "process should throw an exception if file is broken"() {

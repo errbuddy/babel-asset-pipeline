@@ -16,24 +16,22 @@ class BabelProcessor extends AbstractProcessor {
 
     BabelProcessor(AssetCompiler precompiler) {
         super(precompiler)
-        initProcessor()
+        if (!babelifier) {
+            initProcessor()
+        }
     }
 
     private initProcessor() {
         globalBabelOptions = CONVERTER.toJson(configuration?.options ?: [:])
-        println configuration
         String processorString = configuration?.processor
         switch (processorString) {
             case 'webpack':
-                println "using webpack"
                 babelifier = new WebpackBabelifier()
                 break
             case 'webpack-dev-server':
-                println "using webpack-dev-server"
                 babelifier = new WebpackDevserverBabelifier()
                 break
             default:
-                println "using rhino"
                 babelifier = new DirectBabelifier()
                 break
         }
@@ -58,7 +56,7 @@ class BabelProcessor extends AbstractProcessor {
      * @return
      */
     private boolean shouldFileBeProcessed(AssetFile assetFile) {
-        return !babelifier.usingDevServer && (processJsFiles || assetFile in Es6AssetFile || assetFile in JsxAssetFile)
+        return (processJsFiles || assetFile in Es6AssetFile || assetFile in JsxAssetFile)
     }
 
     static void print(text) {

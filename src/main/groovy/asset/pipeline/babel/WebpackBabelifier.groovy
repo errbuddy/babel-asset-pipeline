@@ -4,16 +4,10 @@ import asset.pipeline.AssetFile
 
 class WebpackBabelifier extends Babelifier {
 
-    private static final OUT_DIR = "target/webpack/"
     private String runScript
     private String webpackConfigLocation
 
     public WebpackBabelifier() {
-        // make sure out dir is preset
-        File outDir = new File(outdir)
-        if (!outDir.exists()) {
-            outDir.mkdirs()
-        }
         webpackConfigLocation = configuration.externalWebpackConfig
         runScript = 'node_modules/gradle-babel-asset-pipeline-helper/babel-webpack.js'
     }
@@ -30,8 +24,6 @@ class WebpackBabelifier extends Babelifier {
         if (process.exitValue() > 0) {
             println err.toString()
             throw new BabelifierException(err.toString())
-        } else if (configuration.debug) {
-            println out.toString()
         }
 
         String output = outFile.text
@@ -42,7 +34,7 @@ class WebpackBabelifier extends Babelifier {
 
     String getProcessString(AssetFile file, File outFile) {
         def processString = "$nodeExec $runScript --entry=${getFileRepresentation(file).getAbsolutePath()} --output=$outFile.absolutePath"
-        if(webpackConfigLocation) {
+        if (webpackConfigLocation) {
             processString += " --config=$webpackConfigLocation"
         }
         processString
@@ -50,10 +42,6 @@ class WebpackBabelifier extends Babelifier {
 
     static File getFileRepresentation(AssetFile file) {
         new File("$file.sourceResolver.baseDirectory", file.path)
-    }
-
-    static String getOutdir() {
-        configuration.ourDir ?: OUT_DIR
     }
 
     static getNodeExec() {
