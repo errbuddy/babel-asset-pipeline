@@ -23,4 +23,8 @@ abstract class Babelifier {
     protected String getOptionsString(){
         CONVERTER.toJson(options)
     }
+
+    public boolean isUsingDevServer() {
+        return false
+    }
 }

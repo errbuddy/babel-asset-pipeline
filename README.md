@@ -41,9 +41,9 @@ grails.assets.babel.options = [blacklist: ['useStrict'], loose: 'all'] // babel 
 defaults to null. A Map of options passed to babels transform method. see https://babeljs.io/docs/usage/options/ for possible values
 
 ```
-grails.assets.babel.processor = 'node'
+grails.assets.babel.processor = 'webpack'
 ```
-defaults to null which enabled the built in babel5 Processor. Set to "node" if you want to enable the NodeProcessor which requires to have node and some dependencies installed in your project. Check the node section to see how to setup everything
+defaults to null which enabled the built in babel5 Processor. Check the webpack section to see how to enable webpack or webpack dev server processing
 
 
 ## Modules

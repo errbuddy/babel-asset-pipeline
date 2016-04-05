@@ -1,12 +1,14 @@
 package asset.pipeline.babel
 
 import asset.pipeline.AssetPipelineConfigHolder
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.lang.Unroll
 
 @Unroll
 @Stepwise
+@Ignore("skipping")
 class DirectBabelifierSpec extends Specification {
 
     static final JSX_INPUT = "var foo = (<h1>Hello</h1>);"

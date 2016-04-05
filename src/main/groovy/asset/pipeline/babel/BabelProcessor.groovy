@@ -16,19 +16,49 @@ class BabelProcessor extends AbstractProcessor {
 
     BabelProcessor(AssetCompiler precompiler) {
         super(precompiler)
-        babelifier = configuration?.processor == 'node' ? new NodeBabelifier() : new DirectBabelifier()
+        initProcessor()
+    }
+
+    private initProcessor() {
         globalBabelOptions = CONVERTER.toJson(configuration?.options ?: [:])
+        println configuration
+        String processorString = configuration?.processor
+        switch (processorString) {
+            case 'webpack':
+                println "using webpack"
+                babelifier = new WebpackBabelifier()
+                break
+            case 'webpack-dev-server':
+                println "using webpack-dev-server"
+                babelifier = new WebpackDevserverBabelifier()
+                break
+            default:
+                println "using rhino"
+                babelifier = new DirectBabelifier()
+                break
+        }
     }
 
     String process(String input, AssetFile assetFile) {
         // only process if
         // processing is enabled AND
         // the given AssetFile is a Es6File OR JsxFile OR processJsFiles is enabled
-        if (enabled && (processJsFiles || assetFile in Es6AssetFile || assetFile in JsxAssetFile)) {
+        if (enabled && shouldFileBeProcessed(assetFile)) {
             babelifier.babelify(input, assetFile)
         } else {
             return input
         }
+    }
+
+    /**
+     * checks whether the given AssetFile should be processed this can be false in certain conditions e.g.
+     * processing is outsourced to the webpack-dev-server or
+     * processing of js files is disabled
+     * @param assetFile
+     * @return
+     */
+    private boolean shouldFileBeProcessed(AssetFile assetFile) {
+        return !babelifier.usingDevServer && (processJsFiles || assetFile in Es6AssetFile || assetFile in JsxAssetFile)
     }
 
     static void print(text) {
