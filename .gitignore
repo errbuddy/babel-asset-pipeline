@@ -1,16 +1,16 @@
+# default grails .gitignore taken from https://github.com/grails/grails-profile-repository/blob/master/profiles/base/skeleton/.gitignore
+
+Thumbs.db
+.DS_Store
 .gradle
-build/
-
-# Ignore Gradle GUI config
-gradle-app.setting
-gradle.properties
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
-
+node_modules/
+build/
+out/
 .idea
 *.iml
-
-.DS_STORE
-
-node_modules/
+*.ipr
+*.iws
+.project
+.settings
+.classpath

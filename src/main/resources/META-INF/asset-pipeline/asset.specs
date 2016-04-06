@@ -1,2 +1,2 @@
-asset.pipeline.babel.Es6AssetFile
-asset.pipeline.babel.JsxAssetFile
+babel.asset.pipeline.Es6AssetFile
+babel.asset.pipeline.JsxAssetFile
