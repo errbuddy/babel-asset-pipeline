@@ -1,27 +1,33 @@
 package babel.asset.pipeline
 
 import asset.pipeline.AssetFile
+import groovy.util.logging.Log
 import org.apache.commons.io.FilenameUtils
 
 import java.util.concurrent.TimeUnit
+import java.util.logging.Level
 
+@Log
 class WebpackDevserverBabelifier extends Babelifier {
 
     private String webpackConfigLocation
     private String devServerRunScript
     synchronized private static Process devServerProcess
-    private static final StringBuffer ERROR_BUFFER = new StringBuffer()
+    static String currentlyServingFile = ""
+
+    static LoggingOutputStream infoOut
+    static LoggingOutputStream errOut
 
     public WebpackDevserverBabelifier() {
         // make sure out dir is preset
         devServerRunScript = 'node_modules/gradle-babel-asset-pipeline-helper/babel-webpack-dev-server.js'
         webpackConfigLocation = configuration.externalWebpackConfig
-
     }
 
     String babelify(String string, AssetFile file) {
         File inFile = WebpackBabelifier.getFileRepresentation(file)
-        if (!devServerProcess) {
+        currentlyServingFile = getPublicFileName(inFile)
+        if (!devServerRunning) {
             startDevServer(inFile)
         }
         "http://localhost:$port/${getPublicFileName(inFile)}".toURL().text
@@ -45,24 +51,33 @@ class WebpackDevserverBabelifier extends Babelifier {
     }
 
     void startDevServer(File file) {
-        println "starting dev server on port $port"
+        log.info "starting dev server on port $port"
         Runtime.getRuntime().addShutdownHook {
             killDevServer()
         }
-        devServerProcess = getProcessString(file).execute()
-        devServerProcess.consumeProcessOutput(System.out, ERROR_BUFFER)
+        if (!infoOut) {
+            infoOut = new LoggingOutputStream(log, Level.INFO)
+            errOut = new LoggingOutputStream(log, Level.SEVERE)
+        }
+
+        devServerProcess = getProcessString(file).execute(WebpackBabelifier.environmentVariables, null)
+        devServerProcess.consumeProcessOutput(infoOut, errOut)
         if (devServerProcess.waitFor(5000, TimeUnit.MILLISECONDS)) {
-            throw new BabelifierException(ERROR_BUFFER.toString())
+            throw new BabelifierException("Webpack-dev-server has not started up")
         }
     }
 
     static void killDevServer() {
-        println("killing webpack-dev-server listening on port $port")
+        log.info "killing webpack-dev-server listening on port $port"
         if (devServerProcess && !devServerProcess.alive) {
-            throw new BabelifierException(ERROR_BUFFER.toString())
+            log.warning("could not gracefully stop the dev server")
         }
         devServerProcess?.waitForOrKill(100)
         devServerProcess = null
+        infoOut?.close()
+        infoOut = null
+        errOut?.close()
+        errOut = null
     }
 
     static int getPort() {
@@ -75,6 +90,7 @@ class WebpackDevserverBabelifier extends Babelifier {
 
     String getProcessString(File inFile) {
         def processString = "$WebpackBabelifier.nodeExec $devServerRunScript --entry=$inFile.absolutePath --outName=${getPublicFileName(inFile)} --port=$port"
+
         if (webpackConfigLocation) {
             // add the external config location
             processString += " --config=$webpackConfigLocation"

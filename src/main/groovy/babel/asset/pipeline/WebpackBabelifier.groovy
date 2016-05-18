@@ -1,7 +1,11 @@
 package babel.asset.pipeline
 
 import asset.pipeline.AssetFile
+import groovy.util.logging.Log
 
+import java.util.logging.Level
+
+@Log
 class WebpackBabelifier extends Babelifier {
 
     private String runScript
@@ -13,22 +17,28 @@ class WebpackBabelifier extends Babelifier {
     }
 
     String babelify(String string, AssetFile file) {
+        LoggingOutputStream infoOut = new LoggingOutputStream(log, Level.INFO)
+        LoggingOutputStream errOut = new LoggingOutputStream(log, Level.SEVERE)
         File outFile = File.createTempFile('webpack.', '.bundle.js')
-        Process process = getProcessString(file, outFile).execute()
+        String result
+        try {
+            Process process = getProcessString(file, outFile).execute(environmentVariables, null)
 
-        def out = new StringBuffer()
-        def err = new StringBuffer()
-        process.consumeProcessOutput(out, err)
-        process.waitFor()
+            process.consumeProcessOutput(infoOut, errOut)
+            process.waitFor()
 
-        if (process.exitValue() > 0) {
-            println err.toString()
-            throw new BabelifierException(err.toString())
+            if (process.exitValue() > 0) {
+                throw new BabelifierException("webpack exited with ${process.exitValue()} for $file")
+            }
+
+        } finally {
+            result = outFile.text
+            outFile.delete() // manually delete here as we don't want to leave to much garbage
+            infoOut.close()
+            errOut.close()
         }
 
-        String output = outFile.text
-        outFile.delete() // manually delete
-        return output
+        return result
     }
 
 
@@ -39,6 +49,21 @@ class WebpackBabelifier extends Babelifier {
         }
         processString
     }
+
+    static List getEnvironmentVariables() {
+        List result = []
+        if (nodeEnv) {
+            result << "NODE_ENV=$nodeEnv"
+        }
+        // TODO: add the possibility to add custom env variables
+
+        result
+    }
+
+    static getNodeEnv() {
+        configuration.nodeEnv ?: null
+    }
+
 
     static File getFileRepresentation(AssetFile file) {
         new File("$file.sourceResolver.baseDirectory", file.path)
