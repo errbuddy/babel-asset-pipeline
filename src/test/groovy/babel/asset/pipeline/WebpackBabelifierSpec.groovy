@@ -2,10 +2,6 @@ package babel.asset.pipeline
 
 import asset.pipeline.AssetPipelineConfigHolder
 import asset.pipeline.fs.FileSystemAssetResolver
-import babel.asset.pipeline.Babelifier
-import babel.asset.pipeline.BabelifierException
-import babel.asset.pipeline.Es6AssetFile
-import babel.asset.pipeline.WebpackBabelifier
 import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.lang.Unroll
@@ -18,11 +14,6 @@ class WebpackBabelifierSpec extends Specification {
         AssetPipelineConfigHolder.config = [
                 babel: [
                         processor: 'webpack',
-                        debug    : true,
-                        options  : [
-                                blacklist: ['useStrict'],
-                                loose    : 'all'
-                        ]
                 ]
         ]
     }

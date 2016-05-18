@@ -2,8 +2,6 @@ package babel.asset.pipeline
 
 import asset.pipeline.AssetPipelineConfigHolder
 import asset.pipeline.fs.FileSystemAssetResolver
-import babel.asset.pipeline.Es6AssetFile
-import babel.asset.pipeline.WebpackDevserverBabelifier
 import spock.lang.Specification
 import spock.lang.Stepwise
 import spock.lang.Unroll
@@ -76,7 +74,8 @@ class WebpackDevserverBabelifierSpec extends Specification {
         AssetPipelineConfigHolder.config = [
                 babel: [
                         processor: 'webpack-dev-server',
-                        port     : 3001
+                        port     : 3001,
+                        nodeEnv  : "production"
                 ]
         ]
         when:
