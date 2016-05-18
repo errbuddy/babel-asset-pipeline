@@ -19,7 +19,7 @@ class BabelTagLib {
             if (!BabelProcessor.externalServerRunning) {
                 // at this point we HAVE TO call the processor once, even if the result is cached
                 // so we have to do a little stunt
-                def file = new FileSystemAssetResolver("temp", "grails-app/assets/").getAsset('test/application.js')
+                def file = new FileSystemAssetResolver("temp", "grails-app/assets/").getAsset(src)
                 new BabelProcessor(new AssetCompiler()).process('', file)
             }
 
