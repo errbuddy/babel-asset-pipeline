@@ -75,6 +75,9 @@ public class LoggingOutputStream extends OutputStream {
      * bytes to be written out.
      */
     public void flush() {
+        if(!stringBuffer.size()) {
+            return // nothing to log!
+        }
         stringBuffer.deleteCharAt(stringBuffer.size() - 1)
         if (stringBuffer.size()) {
             log.log(level, stringBuffer.toString())
