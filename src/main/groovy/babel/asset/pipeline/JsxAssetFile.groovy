@@ -1,4 +1,4 @@
-package asset.pipeline.babel
+package babel.asset.pipeline
 
 import asset.pipeline.AbstractAssetFile
 

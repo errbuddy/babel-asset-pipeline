@@ -1,1 +1,1 @@
-asset.pipeline.babel.BabelProcessor=asset.pipeline.JsAssetFile,asset.pipeline.babel.Es6AssetFile,asset.pipeline.babel.JsxAssetFile
+babel.asset.pipeline.BabelProcessor=asset.pipeline.JsAssetFile,babel.asset.pipeline.Es6AssetFile,babel.asset.pipeline.JsxAssetFile
