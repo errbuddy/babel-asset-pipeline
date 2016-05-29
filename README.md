@@ -6,7 +6,7 @@ babel.js transformation for asset-pipeline
 # usage
 simply add
 ```
-compile 'net.errbuddy.plugins:babel-asset-pipeline:2.0.0'
+compile 'net.errbuddy.plugins:babel-asset-pipeline:2.0.6'
 ```
 to dependencies
 
