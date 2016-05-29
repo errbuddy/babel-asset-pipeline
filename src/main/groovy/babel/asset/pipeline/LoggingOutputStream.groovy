@@ -75,13 +75,18 @@ public class LoggingOutputStream extends OutputStream {
      * bytes to be written out.
      */
     public void flush() {
+        try {
         if (stringBuffer.size() > 1) {
             stringBuffer.deleteCharAt(stringBuffer.size() - 1)
             if (stringBuffer.size()) {
                 log.log(level, stringBuffer.toString())
             }
         }
-        stringBuffer = new StringBuffer()
+        } catch (ignore) {
+            // due to the process starting and stopping we might run into concurrency issues here    
+        } finally {
+            stringBuffer = new StringBuffer()
+        }
     }
 
     /**

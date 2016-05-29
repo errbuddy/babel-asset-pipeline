@@ -38,7 +38,7 @@ class WebpackDevserverBabelifier extends Babelifier {
     }
 
     boolean isDevServerRunning() {
-        if (devServerProcess?.alive) {
+        if (devServerProcess && isDevserverAlive(devServerProcess)) {
             try {
                 Socket socket = new Socket()
                 socket.connect(new InetSocketAddress('127.0.0.1', port), 200)
@@ -68,16 +68,15 @@ class WebpackDevserverBabelifier extends Babelifier {
     }
 
     static void killDevServer() {
-        log.info "killing webpack-dev-server listening on port $port"
-        if (devServerProcess && !devServerProcess.alive) {
-            log.warning("could not gracefully stop the dev server")
+        if (devServerProcess && isDevserverAlive(devServerProcess)) {
+            log.info "killing webpack-dev-server listening on port $port"
+            devServerProcess?.waitForOrKill(100)
+            devServerProcess = null
+            infoOut?.close()
+            errOut?.close()
+            infoOut = null
+            errOut = null
         }
-        devServerProcess?.waitForOrKill(100)
-        devServerProcess = null
-        infoOut?.close()
-        errOut?.close()
-        infoOut = null
-        errOut = null
     }
 
     static int getPort() {
@@ -96,5 +95,18 @@ class WebpackDevserverBabelifier extends Babelifier {
             processString += " --config=$webpackConfigLocation"
         }
         processString
+    }
+
+    /**
+     * as Process.alive is a java8 feature, we are implementing it ourselves here
+     * @return
+     */
+    static boolean isDevserverAlive(Process process) {
+        try {
+            process.exitValue();
+            return false;
+        } catch (Exception e) {
+            return true;
+        }
     }
 }
