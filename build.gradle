@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version "2.0.0"
+version "2.0.6"
 group "net.errbuddy.plugins"
 
 apply plugin:"eclipse"
@@ -67,12 +67,11 @@ task wrapper(type: Wrapper) {
 }
 grailsPublish {
     githubSlug = 'errbuddy/babel-asset-pipeline'
+    userOrg = "errbuddy"
     license {
         name = 'Apache-2.0'
     }
-    title = "My Plugin"
-    desc = "Full plugin description"
-    developers = [johndoe:"John Doe"]
-    portalUser = ""
-    portalPassword = ""    
+    title = "Babel Asset Pipeline"
+    desc = "Adds babel transformation to Asset-Pipeline."
+    developers = [peschenbach:"Philipp Eschenbach"]
 }
