@@ -75,8 +75,8 @@ class WebpackDevserverBabelifier extends Babelifier {
         devServerProcess?.waitForOrKill(100)
         devServerProcess = null
         infoOut?.close()
-        infoOut = null
         errOut?.close()
+        infoOut = null
         errOut = null
     }
 

@@ -1,4 +1,3 @@
-sudo: required
 language: groovy
 install:
-  - npm install
+  - gradle npmInstall

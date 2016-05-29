@@ -14,6 +14,7 @@ class WebpackDevserverBabelifierSpec extends Specification {
         AssetPipelineConfigHolder.config = [
                 babel: [
                         processor: 'webpack-dev-server',
+                        nodeExec: BabelSpecTools.guessNodePath()
                 ]
         ]
     }
@@ -33,6 +34,7 @@ class WebpackDevserverBabelifierSpec extends Specification {
         "http://localhost:3000/node-test.js".toURL().text != null
         cleanup:
         babelifier.killDevServer()
+        sleep(500)
     }
 
     def "isDevServerRunning should return true if server really is running"() {
@@ -49,6 +51,7 @@ class WebpackDevserverBabelifierSpec extends Specification {
 
         cleanup:
         babelifier.killDevServer()
+        sleep(500)
     }
 
     def "isDevServerRunning should return false if server is not running"() {
@@ -60,6 +63,7 @@ class WebpackDevserverBabelifierSpec extends Specification {
 
         cleanup:
         babelifier.killDevServer()
+        sleep(500)
     }
 
     def "defining a different port should work"() {
@@ -85,6 +89,7 @@ class WebpackDevserverBabelifierSpec extends Specification {
         "http://localhost:3001/node-test.js".toURL().text != null
         cleanup:
         babelifier.killDevServer()
+        sleep(500)
     }
 
     private static WebpackDevserverBabelifier buildBabelifier() {
