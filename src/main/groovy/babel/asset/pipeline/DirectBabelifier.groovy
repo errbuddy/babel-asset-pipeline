@@ -18,10 +18,10 @@ class DirectBabelifier extends Babelifier {
         // only load all the javascript if it is enabled AND not yet initialized
         if (!contextInitialized) {
             ClassLoader classLoader = this.class.classLoader
-            def shellJsResource = classLoader.getResource('asset/pipeline/babel/shell.js')
-            def envRhinoJsResource = classLoader.getResource('asset/pipeline/babel/env.rhino.js')
-            def objectResource = classLoader.getResource('asset/pipeline/babel/object.js')
-            def babelResource = classLoader.getResource('asset/pipeline/babel/browser.js')
+            def shellJsResource = classLoader.getResource('babel/asset/pipeline/shell.js')
+            def envRhinoJsResource = classLoader.getResource('babel/asset/pipeline/env.rhino.js')
+            def objectResource = classLoader.getResource('babel/asset/pipeline/object.js')
+            def babelResource = classLoader.getResource('babel/asset/pipeline/browser.js')
             Context context = Context.enter()
             context.setOptimizationLevel(-1)
             context.setLanguageVersion(170)
