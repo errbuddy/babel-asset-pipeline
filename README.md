@@ -87,6 +87,10 @@ gradle-babel-asset-pipeline-helper depends on everything that you will need to u
 
 Lastly you should use &lt;babel:webpack src="file.js" /&gt; to reference your js files. This will come in handy if you are using the webpack dev server (otherwise it is not needed!)
 
+
+### Restarting the WebpackDevserver
+In some cases it is needed to restart the devserver. Simply append ?restartWebpack=true to the url you are requesting. The Taglib will take care of killing and restarting the webpack devserver.
+
 ### Configuration
 There are a few additional configuration options you might need to touch
 ```
