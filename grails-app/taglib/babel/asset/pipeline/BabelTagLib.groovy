@@ -16,6 +16,9 @@ class BabelTagLib {
         def src = attrs.src
         def scriptTag
         if (Environment.developmentMode && BabelProcessor.externalServerUsed) { // checking for devMode first prevents the usage in production
+            if (BabelProcessor.externalServerRunning && params.getBoolean('restartWebpack', false)) {
+                WebpackDevserverBabelifier.killDevServer()
+            }
             if (!BabelProcessor.externalServerRunning) {
                 // at this point we HAVE TO call the processor once, even if the result is cached
                 // so we have to do a little stunt
