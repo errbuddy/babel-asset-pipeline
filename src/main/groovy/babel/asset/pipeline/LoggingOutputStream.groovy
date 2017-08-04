@@ -1,7 +1,7 @@
 package babel.asset.pipeline
 
-import java.util.logging.Level
-import java.util.logging.Logger
+import org.slf4j.Logger
+import org.slf4j.event.Level
 
 /**
  * mostly inspired by http://sysgears.com/articles/how-to-redirect-stdout-and-stderr-writing-to-a-log4j-appender/
@@ -79,7 +79,23 @@ public class LoggingOutputStream extends OutputStream {
         if (stringBuffer.size() > 1) {
             stringBuffer.deleteCharAt(stringBuffer.size() - 1)
             if (stringBuffer.size()) {
-                log.log(level, stringBuffer.toString())
+                switch (level) {
+                    case Level.ERROR:
+                        log.error stringBuffer.toString()
+                        break
+                    case Level.WARN:
+                        log.warn stringBuffer.toString()
+                        break
+                    case Level.INFO:
+                        log.info stringBuffer.toString()
+                        break
+                    case Level.DEBUG:
+                        log.debug stringBuffer.toString()
+                        break
+                    case Level.TRACE:
+                        log.trace stringBuffer.toString()
+                        break
+                }
             }
         }
         } catch (ignore) {
