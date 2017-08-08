@@ -15,10 +15,10 @@ buildscript {
 version "2.1.1-SNAPSHOT"
 group "net.errbuddy.plugins"
 
-apply plugin:"eclipse"
-apply plugin:"idea"
-apply plugin:"org.grails.grails-plugin"
-apply plugin:"org.grails.grails-plugin-publish"
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: "org.grails.grails-plugin"
+apply plugin: "org.grails.grails-plugin-publish"
 apply plugin: 'com.moowork.node'
 
 ext {
@@ -74,9 +74,9 @@ node {
 }
 
 test {
-    systemProperties = [
+    systemProperties([
             NODE_ROOT: node.variant?.nodeBinDir
-    ]
+    ])
 }
 
 
@@ -88,5 +88,5 @@ grailsPublish {
     }
     title = "Babel Asset Pipeline"
     desc = "Adds babel transformation to Asset-Pipeline."
-    developers = [peschenbach:"Philipp Eschenbach"]
+    developers = [peschenbach: "Philipp Eschenbach"]
 }
