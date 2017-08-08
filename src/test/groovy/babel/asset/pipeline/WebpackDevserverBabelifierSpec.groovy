@@ -79,7 +79,8 @@ class WebpackDevserverBabelifierSpec extends Specification {
                 babel: [
                         processor: 'webpack-dev-server',
                         port     : 3001,
-                        nodeEnv  : "production"
+                        nodeEnv  : "production",
+                        nodeExec: BabelSpecTools.guessNodePath()
                 ]
         ]
         when:

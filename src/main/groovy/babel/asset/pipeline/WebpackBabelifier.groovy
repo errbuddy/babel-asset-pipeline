@@ -69,7 +69,11 @@ class WebpackBabelifier extends Babelifier {
     }
 
     static getNodeExec() {
-        configuration.nodeExec ?: '/usr/local/bin/node'
+        def execPath = configuration.nodeExec
+        if(!execPath) {
+            throw new RuntimeException("node.js path not configured. See Documentation! Configuration is: ${configuration}")
+        }
+        execPath
     }
 
 }
