@@ -14,6 +14,7 @@ class WebpackBabelifierSpec extends Specification {
         AssetPipelineConfigHolder.config = [
                 babel: [
                         processor: 'webpack',
+                        nodeExec: BabelSpecTools.guessNodePath()
                 ]
         ]
     }

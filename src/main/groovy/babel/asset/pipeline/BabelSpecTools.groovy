@@ -4,7 +4,7 @@ class BabelSpecTools {
 
     public static final String NODE_VERSION = "v5.6.0"
 
-    public static String guessNodePath() {
+    static String guessNodePath() {
         String nodeHome = null
         String nodeRootFromGradle = nodeRootFromGradleDefault
         if (nodeRootFromGradle) {
