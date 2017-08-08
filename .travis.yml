@@ -2,4 +2,4 @@ language: groovy
 install:
   - ./gradlew npmInstall
 script:
-  - ./gradlew test --stacktrace
+  - ./gradlew clean compile test --stacktrace
