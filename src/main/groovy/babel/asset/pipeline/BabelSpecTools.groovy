@@ -2,31 +2,10 @@ package babel.asset.pipeline
 
 class BabelSpecTools {
 
-    public static final String NODE_VERSION = "v5.6.0"
+    public static final String NODE_VERSION = "v8.2.1"
 
     static String guessNodePath() {
-        String nodeHome = null
-        String nodeRootFromGradle = nodeRootFromGradleDefault
-        if (nodeRootFromGradle) {
-            nodeHome = nodeRootFromGradle
-        } else if (nodeRootFromEnv) {
-            nodeHome = nodeRootFromEnv
-        }
-
-        return nodeHome ? getNodeExecutable(nodeHome) : null
-    }
-
-    private static String getNodeExecutable(String nodeHome) {
-        File binDir = new File("$nodeHome/bin")
-        File bin = binDir.listFiles().find { File file ->
-            file.name.contains("node")
-        }
-        return bin?.absolutePath
-    }
-
-
-    private static getNodeRootFromEnv() {
-        System.getenv('NODE_ROOT')
+        return "$nodeRootFromGradleDefault/bin/node"
     }
 
     private static String getNodeRootFromGradleDefault() {

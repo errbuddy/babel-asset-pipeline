@@ -14,21 +14,4 @@ class NodeToolsSpec extends Specification {
         result != '/this/is/a/test/path' // just make sure this is not not failing because of the wild mocking we did
     }
 
-    def "if NODE_PATH is set, it is returned"() {
-        given:
-        def tool = GroovySpy(BabelSpecTools, global: true)
-
-        and:
-        String nodePath = '/this/is/a/test/path'
-
-        when:
-        String result = tool.guessNodePath()
-
-        then:
-        1 * BabelSpecTools.getNodeRootFromGradleDefault() >> null
-        2 * BabelSpecTools.getNodeRootFromEnv() >> nodePath
-        1 * BabelSpecTools.getNodeExecutable(nodePath) >> "$nodePath/bin/node"
-        result == "$nodePath/bin/node"
-    }
-
 }
