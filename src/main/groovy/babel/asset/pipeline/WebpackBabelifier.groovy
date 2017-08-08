@@ -1,11 +1,10 @@
 package babel.asset.pipeline
 
 import asset.pipeline.AssetFile
-import groovy.util.logging.Log
+import groovy.util.logging.Slf4j
+import org.slf4j.event.Level
 
-import java.util.logging.Level
-
-@Log
+@Slf4j
 class WebpackBabelifier extends Babelifier {
 
     private String runScript
@@ -18,7 +17,7 @@ class WebpackBabelifier extends Babelifier {
 
     String babelify(String string, AssetFile file) {
         LoggingOutputStream infoOut = new LoggingOutputStream(log, Level.INFO)
-        LoggingOutputStream errOut = new LoggingOutputStream(log, Level.SEVERE)
+        LoggingOutputStream errOut = new LoggingOutputStream(log, Level.ERROR)
         File outFile = File.createTempFile('webpack.', '.bundle.js')
         String result
         try {

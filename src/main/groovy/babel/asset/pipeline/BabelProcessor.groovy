@@ -5,9 +5,9 @@ import asset.pipeline.AssetCompiler
 import asset.pipeline.AssetFile
 import asset.pipeline.AssetPipelineConfigHolder
 import com.google.gson.Gson
-import groovy.util.logging.Log
+import groovy.util.logging.Slf4j
 
-@Log
+@Slf4j
 class BabelProcessor extends AbstractProcessor {
 
 
@@ -40,7 +40,7 @@ class BabelProcessor extends AbstractProcessor {
                 babelifierInstance = new DirectBabelifier()
                 break
         }
-        log.info "initiated ${babelifierInstance.class.simpleName}"
+        log.info 'initiated {}', babelifierInstance.class.simpleName
     }
 
     String process(String input, AssetFile assetFile) {

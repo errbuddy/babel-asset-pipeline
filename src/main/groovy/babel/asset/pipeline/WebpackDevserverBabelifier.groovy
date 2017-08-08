@@ -1,13 +1,13 @@
 package babel.asset.pipeline
 
 import asset.pipeline.AssetFile
-import groovy.util.logging.Log
+import groovy.util.logging.Slf4j
 import org.apache.commons.io.FilenameUtils
+import org.slf4j.event.Level
 
 import java.util.concurrent.TimeUnit
-import java.util.logging.Level
 
-@Log
+@Slf4j
 class WebpackDevserverBabelifier extends Babelifier {
 
     private String webpackConfigLocation
@@ -57,7 +57,7 @@ class WebpackDevserverBabelifier extends Babelifier {
         }
         if (!infoOut) {
             infoOut = new LoggingOutputStream(log, Level.INFO)
-            errOut = new LoggingOutputStream(log, Level.SEVERE)
+            errOut = new LoggingOutputStream(log, Level.ERROR)
         }
 
         devServerProcess = getProcessString(file).execute(WebpackBabelifier.environmentVariables, null)
