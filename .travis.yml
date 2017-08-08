@@ -4,4 +4,4 @@ jdk:
 install:
   - ./gradlew npmInstall
 script:
-  - ./gradlew clean test --stacktrace
+  - ./gradlew clean test --stacktrace --info
