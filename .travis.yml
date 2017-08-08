@@ -1,4 +1,4 @@
-language: groovy
+language: java
 install:
   - ./gradlew npmInstall
 script:
