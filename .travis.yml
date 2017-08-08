@@ -1,4 +1,9 @@
 language: java
+cache:
+  directories:
+  - .gradle
+  - $HOME/.gradle
+  - $HOME/.m2
 jdk:
   - oraclejdk8
 install:

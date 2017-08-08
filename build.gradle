@@ -71,7 +71,7 @@ task wrapper(type: Wrapper) {
 }
 
 node {
-    version = '5.6.0'
+    version = "$nodeVersion"
     download = true
 }
 
