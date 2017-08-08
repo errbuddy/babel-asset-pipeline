@@ -116,3 +116,16 @@ If you want to use a custom one you can define a file here which is required by 
 Your configuration should either be a webpack config object (see webpack documenation) or a function (which is recommended) which is then called with the same parameters the default build function is called with.
 The default function should give you a fair idea on what the parameters are and how to use it properly.
 This is usable for webpack-dev-server to but here it is important to stick closely to [the default buildConfig()](https://github.com/peh/gradle-babel-asset-pipeline-helper/blob/master/babel-webpack-dev-server.js#L38) as HMR is breaking pretty easy when something is not configured right.
+
+
+### Plugin Development
+
+If you want to help extending this plugin you can get setup in minutes by:
+
+```
+git clone https://github.com/errbuddy/babel-asset-pipeline.git
+cd babel-asset-pipeline
+./gradlew npmInstall
+```
+
+Now your local environment has the required nodeJs version installed and you can start hacking. Feel free to create a PR for your changes
