@@ -13,6 +13,16 @@ class BabelTagLib {
         if (!attrs.src) {
             throwTagError('missing attribute [src]')
         }
+
+        def crossorigin = ""
+        if(attrs.crossorigin) {
+            crossorigin = "crossorigin"
+        }
+
+        def async = ""
+        if(attrs.async) {
+            async = " async"
+        }
         def src = attrs.src
         def scriptTag
         if (Environment.developmentMode && BabelProcessor.externalServerUsed) { // checking for devMode first prevents the usage in production
@@ -26,7 +36,7 @@ class BabelTagLib {
                 new BabelProcessor(new AssetCompiler()).process('', file)
             }
 
-            scriptTag = "<script src='http://localhost:$WebpackDevserverBabelifier.port/${FilenameUtils.getBaseName(src)}.js'></script>"
+            scriptTag = "<script src='http://localhost:$WebpackDevserverBabelifier.port/${FilenameUtils.getBaseName(src)}.js'$crossorigin$async></script>"
             // outputting this will make the browser request the right stuff
         } else {
             scriptTag = asset.javascript(src: src, absolute: true)
