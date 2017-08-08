@@ -8,6 +8,7 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:$assetPipelineVersion"
         classpath "com.moowork.gradle:gradle-node-plugin:0.12"
     }
 }
@@ -17,6 +18,7 @@ group "net.errbuddy.plugins"
 
 apply plugin: "eclipse"
 apply plugin: "idea"
+apply plugin: 'asset-pipeline'
 apply plugin: "org.grails.grails-plugin"
 apply plugin: "org.grails.grails-plugin-publish"
 apply plugin: 'com.moowork.node'
@@ -73,12 +75,13 @@ node {
     download = true
 }
 
-test {
-    systemProperties([
-            NODE_ROOT: node.variant?.nodeBinDir
-    ])
+assets {
+    configOptions = [
+            babel: [
+                    nodeExec: node.variant?.nodeBinDir
+            ]
+    ]
 }
-
 
 grailsPublish {
     githubSlug = 'errbuddy/babel-asset-pipeline'
